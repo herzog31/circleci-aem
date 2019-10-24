@@ -16,3 +16,9 @@ jobs:
             ls -aslh
             ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
             curl -v -u 'admin:admin' http://localhost:4502
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - integration-tests
