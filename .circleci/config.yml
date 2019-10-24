@@ -8,6 +8,8 @@ jobs:
             username: $DOCKER_USER
             password: $DOCKER_PASS
 
+    working_directory: /home/circleci/cq
+
     steps:
       - run:
           name: Start CQ
