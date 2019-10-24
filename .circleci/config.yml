@@ -1,0 +1,18 @@
+version: 2.1
+
+jobs:
+  integration-tests:
+    docker:
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem:cq650-latest
+        auth:
+            username: $DOCKER_USER
+            password: $DOCKER_PASS
+
+    steps:
+      - run:
+          name: Start CQ
+          command: |
+            pwd
+            ls -aslh
+            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
+            curl -v -u 'admin:admin' http://localhost:4502
