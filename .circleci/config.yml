@@ -18,18 +18,27 @@ jobs:
 
     steps:
       - run:
-          name: Download Venia Store
+          name: Build CIF connector
           command: |
-            curl -vL https://github.com/adobe/aem-cif-project-archetype/releases/download/latest/demo-store.all-1.0.0.zip --output demo-store.all-1.0.0.zip
+            git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
+            cd commerce-cif-connector
+            mvn clean install
             ls -aslh
+            pwd
 
       - run:
           name: Start CQ
           command: |
             ls -aslh
             ./qp.sh -v bind --server-hostname localhost --server-port 55555
-            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar --install-file demo-store.all-1.0.0.zip
-            curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
+            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar \ 
+              --bundle com.adobe.commerce.cif:graphql-client:1.1.1:jar \
+              --bundle com.adobe.commerce.cif:magento-graphql:4.0.0-magento233:jar \
+              --install-file commerce-cif-connector/bundles/cif-connector-graphql/target/cif-connector-graphql-0.6.0-SNAPSHOT.jar \
+              --install-file commerce-cif-connector/bundles/cif-virtual-catalog/target/cif-virtual-catalog-0.6.0-SNAPSHOT.jar \
+              --install-file commerce-cif-connector/content/cif-connector/target/cif-connector-content-0.6.0-SNAPSHOT.zip \
+              --install-file commerce-cif-connector/content/cif-virtual-catalog/target/cif-virtual-catalog-content-0.6.0-SNAPSHOT.zip
+            curl -v -u 'admin:admin' http://localhost:4502
             ./qp.sh -v stop --id author
 
 workflows:
