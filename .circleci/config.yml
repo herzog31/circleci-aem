@@ -8,15 +8,15 @@ jobs:
     working_directory: /home/circleci
 
     steps:
+      - run:
+          name: Checkout
+          command: |
+            git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
+
       - restore_cache:
           keys: 
             - maven-repo-v1-{{ checksum "commerce-cif-connector/pom.xml" }}
             - maven-repo-v1-
-
-      - run:
-          name: Clone
-          command: |
-            git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
 
       - run:
           name: Build
