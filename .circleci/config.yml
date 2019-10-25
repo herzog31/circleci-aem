@@ -16,8 +16,11 @@ jobs:
           command: |
             pwd
             ls -aslh
+            ./qp.sh start_local_server --server-hostname 0.0.0.0 --server-port 55555
             ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
             curl -v -u 'admin:admin' http://localhost:4502
+
+            TODO: Start QP
 
 workflows:
   version: 2
