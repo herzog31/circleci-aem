@@ -22,7 +22,7 @@ jobs:
           command: |
             git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
             cd commerce-cif-connector
-            mvn clean install
+            mvn -B clean install
             ls -aslh
             pwd
 
