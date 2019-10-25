@@ -18,13 +18,18 @@ jobs:
 
     steps:
       - run:
+          name: Download Venia Store
+          command: |
+            curl -v https://github.com/adobe/aem-cif-project-archetype/releases/download/latest/demo-store.all-1.0.0.zip --output demo-store.all.zip
+            ls -aslh
+
+      - run:
           name: Start CQ
           command: |
-            pwd
             ls -aslh
             ./qp.sh -v bind --server-hostname localhost --server-port 55555
-            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
-            curl -v -u 'admin:admin' http://localhost:4502
+            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar --install-file demo-store.all.zip
+            curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
             ./qp.sh -v stop --id author
 
 workflows:
