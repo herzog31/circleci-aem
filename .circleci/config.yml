@@ -3,10 +3,16 @@ version: 2.1
 jobs:
   integration-tests:
     docker:
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.3
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+
+
       - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem:cq650-latest
         auth:
-            username: $DOCKER_USER
-            password: $DOCKER_PASS
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
 
     working_directory: /home/circleci/cq
 
@@ -16,11 +22,10 @@ jobs:
           command: |
             pwd
             ls -aslh
-            ./qp.sh start_local_server --server-hostname 0.0.0.0 --server-port 55555
+            ./qp.sh -b bind --server-hostname localhost --server-port 55555
             ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
             curl -v -u 'admin:admin' http://localhost:4502
-
-            TODO: Start QP
+            ./qp.sh -v stop --id author
 
 workflows:
   version: 2
