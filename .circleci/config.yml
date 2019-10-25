@@ -1,6 +1,43 @@
 version: 2.1
 
 jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-stretch
+
+    working_directory: /home/circleci
+
+    steps:
+      - restore_cache:
+          keys: 
+            - maven-repo-v1-{{ checksum "commerce-cif-connector/pom.xml" }}
+            - maven-repo-v1-
+
+      - run:
+          name: Clone
+          command: |
+            git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
+
+      - run:
+          name: Build
+          working_directory: /home/circleci/commerce-cif-connector
+          command: |
+            java -version
+            mvn -v
+            mvn -B clean install
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-repo-v1-{{ checksum "commerce-cif-connector/pom.xml" }}
+
+      - persist_to_workspace:
+          root: /home/circleci/commerce-cif-connector
+          paths:
+            - bundles/*/target/*.jar
+            - content/*/target/*.zip
+
+
   integration-tests:
     docker:
       - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.3
@@ -17,21 +54,15 @@ jobs:
     working_directory: /home/circleci/cq
 
     steps:
-      - run:
-          name: Build CIF connector
-          command: |
-            git clone --depth 1 https://github.com/adobe/commerce-cif-connector.git
-            cd commerce-cif-connector
-            mvn -B clean install
-            ls -aslh
-            pwd
+      - attach_workspace:
+          at: /home/circleci/commerce-cif-connector
 
       - run:
           name: Start CQ
           command: |
             ls -aslh
             ./qp.sh -v bind --server-hostname localhost --server-port 55555
-            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar --bundle com.adobe.commerce.cif:graphql-client:1.1.1:jar --bundle com.adobe.commerce.cif:magento-graphql:4.0.0-magento233:jar --install-file commerce-cif-connector/bundles/cif-connector-graphql/target/cif-connector-graphql-0.6.0-SNAPSHOT.jar --install-file commerce-cif-connector/bundles/cif-virtual-catalog/target/cif-virtual-catalog-0.6.0-SNAPSHOT.jar --install-file commerce-cif-connector/content/cif-connector/target/cif-connector-content-0.6.0-SNAPSHOT.zip --install-file commerce-cif-connector/content/cif-virtual-catalog/target/cif-virtual-catalog-content-0.6.0-SNAPSHOT.zip
+            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar --bundle com.adobe.commerce.cif:graphql-client:1.1.1:jar --bundle com.adobe.commerce.cif:magento-graphql:4.0.0-magento233:jar --install-file /home/circleci/commerce-cif-connector/bundles/cif-connector-graphql/target/cif-connector-graphql-0.6.0-SNAPSHOT.jar --install-file /home/circleci/commerce-cif-connector/bundles/cif-virtual-catalog/target/cif-virtual-catalog-0.6.0-SNAPSHOT.jar --install-file /home/circleci/commerce-cif-connector/content/cif-connector/target/cif-connector-content-0.6.0-SNAPSHOT.zip --install-file /home/circleci/commerce-cif-connector/content/cif-virtual-catalog/target/cif-virtual-catalog-content-0.6.0-SNAPSHOT.zip
             curl -v -u 'admin:admin' http://localhost:4502
             ./qp.sh -v stop --id author
 
@@ -39,4 +70,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - integration-tests
+      - build
+      - integration-tests:
+          requires:
+            - build
