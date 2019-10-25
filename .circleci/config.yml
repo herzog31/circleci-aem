@@ -22,7 +22,7 @@ jobs:
           command: |
             pwd
             ls -aslh
-            ./qp.sh -b bind --server-hostname localhost --server-port 55555
+            ./qp.sh -v bind --server-hostname localhost --server-port 55555
             ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
             curl -v -u 'admin:admin' http://localhost:4502
             ./qp.sh -v stop --id author
