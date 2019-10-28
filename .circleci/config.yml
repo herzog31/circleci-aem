@@ -52,7 +52,7 @@ jobs:
           username: $DOCKER_USER
           password: $DOCKER_PASS
 
-    working_directory: /home/circleci/cq
+    working_directory: /home/circleci
 
     steps:
       - run:
@@ -88,9 +88,12 @@ jobs:
 
       - run:
           name: Integration Tests
-          command: |
-            curl -v -u 'admin:admin' http://localhost:4502
-            mvn clean verify -Ptest-all -U -B -Dsling.it.instance.url.1=http://localhost:4502 -Dsling.it.instance.runmode.1=author -Dsling.it.instances=1
+          command: > 
+            mvn clean verify -U -B
+            -Ptest-all
+            -Dsling.it.instance.url.1=http://localhost:4502
+            -Dsling.it.instance.runmode.1=author
+            -Dsling.it.instances=1
           working_directory: /home/circleci/commerce-cif-connector/it/http
 
       - run:
