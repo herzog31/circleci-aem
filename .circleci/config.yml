@@ -96,6 +96,12 @@ jobs:
             -Dsling.it.instances=1
           working_directory: /home/circleci/cq/commerce-cif-connector/it/http
 
+      - store_test_results:
+          path: /home/circleci/cq/commerce-cif-connector/it/http/target/failsafe-reports
+
+      - store_artifacts:
+          path: /home/circleci/cq/commerce-cif-connector/it/http/target/failsafe-reports
+
       - run:
           name: Stop CQ
           command: ./qp.sh -v stop --id author
