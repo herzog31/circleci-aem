@@ -11,6 +11,6 @@ describe('Sample Test', () => {
         cy.visit('http://localhost:4502/content/venia.html', { ...auth });
 
         cy.contains('This page redirects to');
-        cy.get('a').should('contain', 'English');
+        cy.get('a').should('have.attr', 'href', '/content/venia/us/en.html');
     });
 });

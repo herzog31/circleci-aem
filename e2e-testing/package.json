@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run -b chrome"
+    "test": "cypress run -b chrome --reporter junit"
   },
   "author": "Mark J. Becker",
   "license": "Apache-2.0",

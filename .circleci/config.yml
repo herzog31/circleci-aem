@@ -114,7 +114,6 @@ jobs:
           username: $DOCKER_USER
           password: $DOCKER_PASS
 
-
       - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem:cq650-latest
         auth:
           username: $DOCKER_USER
@@ -159,6 +158,9 @@ jobs:
 
       - store_artifacts:
           path: /home/circleci/cq/repo/e2e-testing/cypress/videos/
+
+      - store_test_results:
+          path: /home/circleci/cq/repo/e2e-testing/test-results.xml
 
       - run:
           name: Stop CQ
