@@ -124,12 +124,13 @@ jobs:
 
     steps:
 
-      - checkout
+      - checkout:
+          path: repo
 
       - run:
           name: Prepare E2E tests
           command: |
-            cd e2e-testing
+            cd repo/e2e-testing
             npm install
 
       - run:
@@ -150,7 +151,7 @@ jobs:
           name: Test Homepage
           command: |
             curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
-            cd e2e-testing
+            cd repo/e2e-testing
             npm test
 
       - run:
