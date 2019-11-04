@@ -88,7 +88,7 @@ jobs:
 
       - run:
           name: Integration Tests
-          command: > 
+          command: >
             mvn clean verify -U -B
             -Ptest-all
             -Dsling.it.instance.url.1=http://localhost:4502
@@ -106,11 +106,52 @@ jobs:
           name: Stop CQ
           command: ./qp.sh -v stop --id author
 
+
+  cypress-tests:
+    docker:
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-qp:6.4.3
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+
+
+      - image: docker-adobe-cif-release.dr-uw2.adobeitc.com/circleci-aem:cq650-latest
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+
+    working_directory: /home/circleci/cq
+
+    steps:
+
+      - run:
+          name: Download CIF Demo project
+          command: curl -vL https://github.com/adobe/aem-cif-project-archetype/releases/download/cif-project-archetype-0.5.0/demo-store.all-0.5.0.zip --output demo-store.all-0.5.0.zip
+
+      - run:
+          name: Connect to QP
+          command: ./qp.sh -v bind --server-hostname localhost --server-port 55555
+
+      - run:
+          name: Start CQ
+          command: >
+            ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
+            --install-file /home/circleci/demo-store.all-0.5.0.zip
+
+      - run:
+          name: Test Homepage
+          command: curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
+
+      - run:
+          name: Stop CQ
+          command: ./qp.sh -v stop --id author
+
 workflows:
   version: 2
   build:
     jobs:
-      - build
-      - integration-tests:
-          requires:
-            - build
+#       - build
+#      - integration-tests:
+#          requires:
+#            - build
+      - cypress-tests
