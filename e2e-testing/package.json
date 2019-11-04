@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run -b chrome --reporter junit"
+    "test": "npm run cy:run",
+    "cy:run": "cypress run -b chrome",
+    "cy:verify": "cypress verify",
+    "cy:open": "cypress open"
   },
   "author": "Mark J. Becker",
   "license": "Apache-2.0",

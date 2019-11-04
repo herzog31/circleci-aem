@@ -105,4 +105,6 @@ dist
 
 # Cypress
 test-results.xml
-cypress/videos/
+*.mp4
+
+.DS_Store

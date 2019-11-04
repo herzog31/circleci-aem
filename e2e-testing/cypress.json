@@ -1,1 +1,7 @@
-{}
+{
+    "baseUrl": "http://localhost:4502",
+    "reporter": "junit",
+    "reporterOptions": {
+        "mochaFile": "results/test-results.xml"
+    }
+}

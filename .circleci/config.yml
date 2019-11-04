@@ -126,11 +126,17 @@ jobs:
       - checkout:
           path: repo
 
+      - restore_cache:
+          keys: 
+            - cypress-cache-v1-{{ checksum "repo/e2e-testing/package.json" }}
+            - cypress-cache-v1-
+
       - run:
           name: Prepare E2E tests
           command: |
             cd repo/e2e-testing
-            npm install
+            npm ci
+            npm run cy:verify
 
       - run:
           name: Download CIF Demo project
@@ -149,7 +155,6 @@ jobs:
       - run:
           name: Test Homepage
           command: |
-            curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
             cd repo/e2e-testing
             npm test
 
@@ -160,11 +165,16 @@ jobs:
           path: /home/circleci/cq/repo/e2e-testing/cypress/videos/
 
       - store_test_results:
-          path: /home/circleci/cq/repo/e2e-testing/test-results.xml
+          path: /home/circleci/cq/repo/e2e-testing/results
 
       - run:
           name: Stop CQ
           command: ./qp.sh -v stop --id author
+
+      - save_cache:
+          paths:
+            - ~/cache
+          key: cypress-cache-v1-{{ checksum "repo/e2e-testing/package.json" }}
 
 workflows:
   version: 2
