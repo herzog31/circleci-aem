@@ -1,0 +1,14 @@
+{
+  "name": "e2e-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run -b chrome"
+  },
+  "author": "Mark J. Becker",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cypress": "^3.6.0"
+  }
+}

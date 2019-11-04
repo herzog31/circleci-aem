@@ -124,6 +124,14 @@ jobs:
 
     steps:
 
+      - checkout
+
+      - run:
+          name: Prepare E2E tests
+          command: |
+            cd e2e-testing
+            npm install
+
       - run:
           name: Download CIF Demo project
           command: curl -vL https://github.com/adobe/aem-cif-project-archetype/releases/download/cif-project-archetype-0.5.0/demo-store.all-0.5.0.zip --output demo-store.all-0.5.0.zip
@@ -136,11 +144,14 @@ jobs:
           name: Start CQ
           command: >
             ./qp.sh -v start --id author --runmode author --port 4502 --qs-jar cq-quickstart.jar
-            --install-file /home/circleci/demo-store.all-0.5.0.zip
+            --install-file /home/circleci/cq/demo-store.all-0.5.0.zip
 
       - run:
           name: Test Homepage
-          command: curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
+          command: |
+            curl -v -u 'admin:admin' http://localhost:4502/content/venia.html
+            cd e2e-testing
+            npm test
 
       - run:
           name: Stop CQ
