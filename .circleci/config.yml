@@ -154,6 +154,12 @@ jobs:
             cd repo/e2e-testing
             npm test
 
+      - store_artifacts:
+          path: /home/circleci/cq/repo/e2e-testing/cypress/screenshots/
+
+      - store_artifacts:
+          path: /home/circleci/cq/repo/e2e-testing/cypress/videos/
+
       - run:
           name: Stop CQ
           command: ./qp.sh -v stop --id author
