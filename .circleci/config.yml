@@ -74,7 +74,6 @@ jobs:
       - run:
           name: Integration tests
           command: node /home/circleci/repo/.circleci/ci/it-tests.js
-          working_directory: /home/circleci/cq/commerce-cif-connector
 
       - store_test_results:
           path: /home/circleci/cq/commerce-cif-connector/it/http/target/failsafe-reports
@@ -117,7 +116,6 @@ jobs:
       - run:
           name: Integration tests
           command: node /home/circleci/repo/.circleci/ci/it-tests.js
-          working_directory: /home/circleci/cq/commerce-cif-connector
 
       - store_test_results:
           path: /home/circleci/cq/commerce-cif-connector/it/http/target/failsafe-reports

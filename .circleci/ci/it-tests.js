@@ -18,11 +18,11 @@ const ci = new (require('./ci.js'))();
 
 ci.context();
 
-ci.sh('ls -aslh');
-
-const configuration = ci.restoreConfiguration();
-console.log(configuration);
-
+ci.dir('commerce-cif-connector', () => {
+    ci.sh('ls -aslh');
+    const configuration = ci.restoreConfiguration();
+    console.log(configuration);
+});
 
 ci.stage("Integration Tests");
 
@@ -42,7 +42,7 @@ ci.sh(`./qp.sh -v start --id author --runmode author --port 4502 --qs-jar /home/
     --install-file /home/circleci/cq/commerce-cif-connector/it/content/target/it-test-content-0.1.3-SNAPSHOT.zip`);
 
 // Run integration tests
-ci.dir('it/http', () => {
+ci.dir('commerce-cif-connector/it/http', () => {
     ci.sh(`mvn clean verify -U -B \
         -Ptest-all \
         -Dsling.it.instance.url.1=http://localhost:4502 \
