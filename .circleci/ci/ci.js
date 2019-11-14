@@ -121,7 +121,7 @@ module.exports = class CI {
 
     collectConfiguration() {
         let configuration = {
-            modules: []
+            modules: {}
         };
         
         let folders = [process.cwd()];
@@ -142,13 +142,13 @@ module.exports = class CI {
         
                 let pomPath = path.resolve(folder, file.name);
                 let metaData = this.sh('printf \'${project.groupId}|${project.artifactId}|${project.name}|${project.version}|${project.packaging}\' | mvn -f ' + pomPath + ' help:evaluate --non-recursive | grep -Ev "(Download|\\[)"', true, false).split('|');
-                configuration.modules.push({
+                configuration.modules[metaData[1]] = {
                     groupId: metaData[0],
                     artifactId: metaData[1],
                     name: metaData[2],
                     version: metaData[3],
                     packaging: metaData[4]
-                });
+                };
                 process.stdout.write('.');
             }
         }
