@@ -24,3 +24,5 @@ console.log(configuration);
 
 ci.stage('Build Project');
 ci.sh('mvn -B clean install');
+
+ci.sh('ls -aslh');

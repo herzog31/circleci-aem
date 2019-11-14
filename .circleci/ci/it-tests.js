@@ -18,11 +18,14 @@ const ci = new (require('./ci.js'))();
 
 ci.context();
 
+ci.sh('ls -aslh');
+
 const configuration = ci.restoreConfiguration();
 console.log(configuration);
 
 
 ci.stage("Integration Tests");
+
 // Connect to QP
 ci.sh('./qp.sh -v bind --server-hostname localhost --server-port 55555');
 
