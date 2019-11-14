@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - checkout
-          path: /home/circleci/repo
+        path: /home/circleci/repo
 
       - run:
           name: Checkout
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - checkout
-          path: /home/circleci/repo
+        path: /home/circleci/repo
 
       - run:
           name: Checkout
@@ -128,7 +128,7 @@ jobs:
 
     steps:
       - checkout
-          path: /home/circleci/repo
+        path: /home/circleci/repo
 
       - run:
           name: Checkout
