@@ -158,4 +158,9 @@ module.exports = class CI {
         return configuration;
     }
 
+    restoreConfiguration() {
+        let configuration = fs.readFileSync('configuration.json');
+        return JSON.parse(configuration);
+    }
+
 };
