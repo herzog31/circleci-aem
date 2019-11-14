@@ -18,11 +18,18 @@ const ci = new (require('./ci.js'))();
 
 ci.context();
 
+let config;
+
 ci.dir('commerce-cif-connector', () => {
-    ci.sh('ls -aslh');
-    const config = ci.restoreConfiguration();
+    config = ci.restoreConfiguration();
     console.log(config);
 });
+
+// TODO: Jacoco needs to be configured in container image
+//ci.stage("Install Jacoco");
+//ci.sh('mvn -B org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=org.jacoco:jacoco-maven-plugin:0.8.3');
+//const jacocoAgentPath = ci.sh('mvn -X | grep "local repository" | cut -d " " -f6', true).trim() + '/org/jacoco/org.jacoco.agent/${version}/org.jacoco.agent-0.8.3-runtime.jar';
+//     --vm-options '-javaagent:${jacocoAgentPath}=destfile=jacoco-it.exec'
 
 ci.stage("Integration Tests");
 
