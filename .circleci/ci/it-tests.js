@@ -20,8 +20,8 @@ ci.context();
 
 ci.dir('commerce-cif-connector', () => {
     ci.sh('ls -aslh');
-    const configuration = ci.restoreConfiguration();
-    console.log(configuration);
+    const config = ci.restoreConfiguration();
+    console.log(config);
 });
 
 ci.stage("Integration Tests");
@@ -35,11 +35,11 @@ ci.sh(`./qp.sh -v start --id author --runmode author --port 4502 --qs-jar /home/
     --bundle com.adobe.commerce.cif:graphql-client:1.1.1:jar \
     --bundle com.adobe.commerce.cif:magento-graphql:4.0.0-magento233:jar \
     --bundle com.adobe.cq:core.wcm.components.all:2.4.0:zip \
-    --install-file /home/circleci/cq/commerce-cif-connector/bundles/cif-connector-graphql/target/cif-connector-graphql-0.6.1-SNAPSHOT.jar \
-    --install-file /home/circleci/cq/commerce-cif-connector/bundles/cif-virtual-catalog/target/cif-virtual-catalog-0.6.1-SNAPSHOT.jar \
-    --install-file /home/circleci/cq/commerce-cif-connector/content/cif-connector/target/cif-connector-content-0.6.1-SNAPSHOT.zip \
-    --install-file /home/circleci/cq/commerce-cif-connector/content/cif-virtual-catalog/target/cif-virtual-catalog-content-0.6.1-SNAPSHOT.zip \
-    --install-file /home/circleci/cq/commerce-cif-connector/it/content/target/it-test-content-0.1.3-SNAPSHOT.zip`);
+    --install-file /home/circleci/cq/commerce-cif-connector/bundles/cif-connector-graphql/target/cif-connector-graphql-${config.modules['cif-connector-graphql'].version}.jar \
+    --install-file /home/circleci/cq/commerce-cif-connector/bundles/cif-virtual-catalog/target/cif-virtual-catalog-${config.modules['cif-virtual-catalog'].version}.jar \
+    --install-file /home/circleci/cq/commerce-cif-connector/content/cif-connector/target/cif-connector-content-${config.modules['cif-connector-content'].version}.zip \
+    --install-file /home/circleci/cq/commerce-cif-connector/content/cif-virtual-catalog/target/cif-virtual-catalog-content-${config.modules['cif-virtual-catalog-content'].version}.zip \
+    --install-file /home/circleci/cq/commerce-cif-connector/it/content/target/it-test-content-${config.modules['it-test-content'].version}.zip`);
 
 // Run integration tests
 ci.dir('commerce-cif-connector/it/http', () => {

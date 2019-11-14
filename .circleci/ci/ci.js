@@ -147,7 +147,8 @@ module.exports = class CI {
                     artifactId: metaData[1],
                     name: metaData[2],
                     version: metaData[3],
-                    packaging: metaData[4]
+                    packaging: metaData[4],
+                    path: folder
                 };
                 process.stdout.write('.');
             }
