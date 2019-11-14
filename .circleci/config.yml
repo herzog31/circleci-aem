@@ -8,6 +8,9 @@ jobs:
     working_directory: /home/circleci
 
     steps:
+      - checkout
+          path: /home/circleci/repo
+
       - run:
           name: Checkout
           command: |
@@ -21,11 +24,8 @@ jobs:
       - run:
           name: Build
           working_directory: /home/circleci/commerce-cif-connector
-          command: |
-            java -version
-            mvn -v
-            mvn -B clean install
-
+          command: node /home/circleci/repo/.circleci/ci/build.js
+  
       - save_cache:
           paths:
             - ~/.m2
@@ -55,6 +55,9 @@ jobs:
     working_directory: /home/circleci/cq
 
     steps:
+      - checkout
+          path: /home/circleci/repo
+
       - run:
           name: Checkout
           command: |
@@ -124,6 +127,9 @@ jobs:
     working_directory: /home/circleci/cq
 
     steps:
+      - checkout
+          path: /home/circleci/repo
+
       - run:
           name: Checkout
           command: |
