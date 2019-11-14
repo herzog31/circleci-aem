@@ -8,8 +8,8 @@ jobs:
     working_directory: /home/circleci
 
     steps:
-      - checkout
-        path: /home/circleci/repo
+      - checkout:
+          path: /home/circleci/repo
 
       - run:
           name: Checkout
@@ -55,8 +55,8 @@ jobs:
     working_directory: /home/circleci/cq
 
     steps:
-      - checkout
-        path: /home/circleci/repo
+      - checkout:
+          path: /home/circleci/repo
 
       - run:
           name: Checkout
@@ -127,8 +127,8 @@ jobs:
     working_directory: /home/circleci/cq
 
     steps:
-      - checkout
-        path: /home/circleci/repo
+      - checkout:
+          path: /home/circleci/repo
 
       - run:
           name: Checkout
